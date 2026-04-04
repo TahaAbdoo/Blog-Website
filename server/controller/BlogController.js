@@ -1,7 +1,7 @@
 const BlogModel=require('../model/BlogModel');
 const categoryModel = require('../model/CategoryModel');
 require('../model/UserModel');
-require('../model/ImageModel');
+const ImageModel=require('../model/ImageModel');
 
 exports.addBlog=async(req,res)=>{
   try {
@@ -10,24 +10,24 @@ exports.addBlog=async(req,res)=>{
         const Address = req.body.Address;
         const Description = req.body.Description;
         const category = req.body.category;
-        const image=req.file.path.replace(/\\/g, "/");
-
+ 
         let hours = now.getHours(); 
         const minutes = now.getMinutes().toString().padStart(2, '0');
         const period = hours >= 12 ? 'م' : 'ص';
         hours = hours % 12;
         hours = hours ? hours : 12;
         const currentTime = `${hours}:${minutes} ${period}`;
-        if(!Address || !Description){
+        if(!Address || !Description || !category || !req.file){
             return res.json({
                 msg : "أرجو ملء جميع الحقول",
                 state : 0,
                 data : [],
             })
         }
-        const imageDoc = await ImagesModel.create({
-      path: req.file.path.replace(/\\/g, "/")
-    });
+      const imageDoc = await ImageModel.create({
+          path: req.file.path.replace(/\\/g, "/")
+      });
+      
         await BlogModel.create({
             Address: Address,
             Description: Description,

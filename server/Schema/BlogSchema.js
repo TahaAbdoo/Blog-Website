@@ -15,7 +15,7 @@ const BlogSchema =new mongoose.Schema({
         ref: "Category"
     },
     image:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"Image"
         
     },

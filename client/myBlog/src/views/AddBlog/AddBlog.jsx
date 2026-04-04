@@ -18,6 +18,7 @@ const NewBlog = () => {
         form.append("Description", blogContent);
         form.append("category", selectedCategory);
         form.append("userId", user);
+        
         try {
             const res = await axios.post("http://localhost:5500/addBlog",form)
             console.log(res.data);
