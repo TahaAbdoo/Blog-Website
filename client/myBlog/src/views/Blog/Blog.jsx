@@ -4,17 +4,21 @@ import { Surface } from "@heroui/react";
 import { useLocation } from "react-router-dom";
 
 const Blog = () => {
+            const username=JSON.parse(window.localStorage.getItem('user')).username;
+
     const location = useLocation();
     const BlogData = location.state; // 🔥 غير الاسم باش ما تتلخبطش
 
     const [blog, setBlog] = React.useState(null);
-
+    const id=JSON.parse(window.localStorage.getItem('user'))._id;
+    console.log(id);
     const getBlog = async () => {
         try {
             const res = await axios.get(`http://localhost:5500/blog/${BlogData._id}`);
             console.log(res.data.data);
             setBlog(res.data.data);
         } catch (err) {
+            console.log(id);
             console.log(err);
         }
     };
@@ -47,7 +51,7 @@ const Blog = () => {
                     </p>
 
                     <code className="text-xs mt-10 text-red-900 bg-slate-400 p-2 rounded-lg w-fit font-bold">
-                        كتبت بواسطة :طه
+                     كتبت بواسطة :  {username} 
                         <br />
                         في الساعة : {blog?.Time}
                     </code>

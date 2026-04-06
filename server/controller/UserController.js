@@ -1,4 +1,5 @@
 const UserModel=require('../model/UserModel');
+const bcrypt=require('bcrypt');
 
 
 
@@ -16,28 +17,47 @@ exports.login = async (req, res) => {
     });
   }
 
-  const user = await UserModel.findOne({
-    $and:[{email: email},
-        {password:password}
-    ]
-  });
+  const user = await UserModel.findOne(
+    {email: email}
+);
+      console.log(user);
 
-  if (!user) {
+         bcrypt.compare(password,  user.password, function(err, result) {
+    // result == true
+    if(err){
     return res.json({
-      msg: "إسم المستخدم أو كلمة المرور خاطئة !",
+      msg: "خطأ في قاعدة البيانات",
       state: 0,
       data: [],
     });
-  }
+    }
+    if(result){
+        
+        const data={
+            email:user.email,
+            username:user.username,
+            _id:user._id,
+        }
+        return res.json({
+        msg : "تمت المصادقة بنجاح",
+        state : 1,
+        data: data
+    })
+    }
+    if(!result){
+        return res.json({
+            msg: "البريد الإلكتروني أو كلمة المرور خاطئة !",
+            state: 0,
+            data: [],
+          });
+    }
+});
+
 
 
 
     
-     return res.json({
-        msg : "تمت المصادقة بنجاح",
-        state : 1,
-        data: user
-    })
+
   }
     
        /*els((err)=>{
@@ -84,10 +104,11 @@ exports.create=async(req,res)=>{
             }
             
             else{
+         const pass=await bcrypt.hash(password, 8);
         await UserModel.create(
                 {
                     username: username,
-                    password:password,
+                    password:pass,
                     email:email,
                     phone:phone
                 }

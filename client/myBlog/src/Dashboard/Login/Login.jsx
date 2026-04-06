@@ -29,7 +29,7 @@ const loginUser = async () => {
 
       // تسجيل دخول
       localStorage.setItem("login", true);
-
+            setMsg('');
       navigate('/main');
     } else {
       setMsg(res.data.msg);

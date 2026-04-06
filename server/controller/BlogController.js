@@ -10,7 +10,7 @@ exports.addBlog=async(req,res)=>{
         const Address = req.body.Address;
         const Description = req.body.Description;
         const category = req.body.category;
- 
+        
         let hours = now.getHours(); 
         const minutes = now.getMinutes().toString().padStart(2, '0');
         const period = hours >= 12 ? 'م' : 'ص';
@@ -52,16 +52,19 @@ exports.addBlog=async(req,res)=>{
     } catch (error) {
         console.log(error)
         res.json({
-            msg : "Internal Server Error"  + err,
+            msg : "Internal Server Error"  + error,
             state : 0,
             data : []
         })
     }
     
-}
+}                   
 exports.getBlogs=async(req,res)=>{
+            //const id=req.body._id;
+            const userId = req.query.userId;
+            //console.log(id);
     try{
-        const blogs = await BlogModel.find().populate("category").populate("user").populate("image");
+        const blogs = await BlogModel.find({user:userId}).populate("category").populate("user").populate("image");
             res.json({
                 msg : "تم جلب المقالات بنجاح",
                 state : 1,

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
     const navigate = useNavigate();
+    const id=JSON.parse(window.localStorage.getItem('user'))._id;
 
     const [blogs, setBlogs] = React.useState([]);
     const getBlog = async (id) => {
@@ -21,7 +22,8 @@ const Home = () => {
     }
     const getBlogs = async () => {
         try {
-            const res = await axios.get('http://localhost:5500/allBlogs');
+            const res = await axios.get(`http://localhost:5500/allBlogs?userId=${id}`);
+
             console.log(res.data);
 
             setBlogs(res.data.data); // ✅ مهم
@@ -37,7 +39,9 @@ const Home = () => {
     return (
         <div>
             <h1 dir="rtl" className="text-3xl font-bold text-gray-900">
-                مرحباً بك في لوحة التحكم 👋
+                مرحباً بك يا {JSON.parse(window.localStorage.getItem('user')).username}  في موقعنا  👋
+                
+               
             </h1>
 
             <p dir="rtl" className="text-2xl font-bold mt-5">المدونات</p>

@@ -6,6 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 import {Table} from "@heroui/react";
 
 const Categories = () => {
+        const id=JSON.parse(window.localStorage.getItem('user'))._id;
+
         const [CategoryName,setCategoryName]=React.useState('');
         const [Categories,setCategories]=React.useState([]);
         const notify = (msg) => toast(msg);
@@ -28,7 +30,7 @@ const Categories = () => {
         }
         const getCategories=async()=>{
             try{
-        const res= await  axios.get("http://localhost:5500/getCategories");
+            const res= await  axios.get(`http://localhost:5500/getCategories?userId=${id}`);
             console.log(res.data);
 
             setCategories(res.data.data); //

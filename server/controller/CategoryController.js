@@ -20,11 +20,12 @@ exports.addCategory = async (req, res) => {
     }
 };
 exports.getCategories=async (req, res) => {
+        const userId=req.query.userId;
     try {
 
 
 
-        const Categories = await CategoryModel.find()
+        const Categories = await CategoryModel.find({user:userId});
 
         res.json({
             msg: "تم ايجاد التصنيفات✅",
